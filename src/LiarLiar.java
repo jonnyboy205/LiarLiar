@@ -14,8 +14,9 @@ public class LiarLiar {
 	private Scanner input;
 	private int numAccusers;
 	private ArrayList<String> accusers;
-	private ArrayList<String> truthers;
+	private HashMap<String, ArrayList<String>> accusersToAccusees;
 	private HashMap<String, ArrayList<String>> accuseesToAccusers;
+	private ArrayList<String> truthers;
 	private static final boolean DEBUG = true;
 	
 	public LiarLiar(String fileName) throws Exception{
@@ -26,6 +27,7 @@ public class LiarLiar {
 		this.numAccusers = 0;
 		accusers = new ArrayList<String>();
 		truthers = new ArrayList<String>();
+		accusersToAccusees = new HashMap<String, ArrayList<String>>();
 		accuseesToAccusers = new HashMap<String, ArrayList<String>>();
 	}
 	
@@ -46,6 +48,11 @@ public class LiarLiar {
 	public void run(){
 		parseFile();
 		getTruthers();
+		
+		//start looking at truthers, see who they accuse, assume they are liars
+		getLiarsFromTruthers();
+		
+		//TODO inference
 		if (DEBUG)
 			printDetails();
 	}
@@ -58,6 +65,7 @@ public class LiarLiar {
 		for (int i=0; i<numAccusers; i++){
 			readInAccuser();
 		}
+		
 	}
 
 	private void getNumAccusersFromFirstLine() {
@@ -75,8 +83,11 @@ public class LiarLiar {
 		
 		String currentAccusee = "";
 		ArrayList<String> tempAL = new ArrayList<String>();
+		ArrayList<String> accusees = new ArrayList<String>(numAccusees);
 		for (int j=0; j<numAccusees; j++){
 			currentAccusee = input.nextLine();
+			accusees.add(currentAccusee);
+			
 			if (!accuseesToAccusers.containsKey(currentAccusee)){
 				tempAL.clear();
 				tempAL.add(accuser);
@@ -88,6 +99,7 @@ public class LiarLiar {
 				accuseesToAccusers.put(currentAccusee, tempAL);
 			}
 		}
+		accusersToAccusees.put(accuser, accusees);
 	}
 	
 	private void getTruthers(){
@@ -97,21 +109,37 @@ public class LiarLiar {
 		}
 	}
 	
+	/**
+	 * Set as liars all people accused by truthers.
+	 */
+	private void getLiarsFromTruthers(){
+		for (int i=0; i<truthers.size(); i++){
+			//TODO
+			
+		}
+	}
+	
 	private void printDetails(){
-		printHashMap();
+		System.out.println("Accusers to Accusees:");
+		printHashMap(accusersToAccusees);
+		
+		System.out.println();
+		System.out.println("Accusees to Accusers:");
+		printHashMap(accuseesToAccusers);
+		
 		System.out.println();
 		printTruthers();
 	}
 
-	private void printHashMap() {
-		AbstractSet<String> keySet = (AbstractSet<String>) accuseesToAccusers.keySet();
+	private void printHashMap(HashMap<String, ArrayList<String>> hm) {
+		AbstractSet<String> keySet = (AbstractSet<String>) hm.keySet();
 		Iterator<String> keySetIterator = keySet.iterator();
 		String currentAccusee = "";
 		ArrayList<String> accusersPer = new ArrayList<String>();
 		while (keySetIterator.hasNext()){
 			currentAccusee = keySetIterator.next();
 			System.out.print(currentAccusee + "--> (");
-			accusersPer = accuseesToAccusers.get(currentAccusee);
+			accusersPer = hm.get(currentAccusee);
 			for (int b=0; b<accusersPer.size(); b++){
 				System.out.print(accusersPer.get(b));
 				if (b<(accusersPer.size()-1))

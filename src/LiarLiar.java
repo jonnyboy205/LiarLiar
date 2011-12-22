@@ -14,6 +14,7 @@ public class LiarLiar {
 	private Scanner input;
 	private int numAccusers;
 	private ArrayList<String> accusers;
+	private ArrayList<String> truthers;
 	private HashMap<String, ArrayList<String>> accuseesToAccusers;
 	private boolean debug;
 	
@@ -24,6 +25,7 @@ public class LiarLiar {
 		
 		this.numAccusers = 0;
 		accusers = new ArrayList<String>();
+		truthers = new ArrayList<String>();
 		accuseesToAccusers = new HashMap<String, ArrayList<String>>();
 		
 		debug = true;
@@ -45,8 +47,9 @@ public class LiarLiar {
 	
 	public void run(){
 		parseFile();
+		getTruthers();
 		if (debug)
-			printHashMap();
+			printDetails();
 	}
 	
 	private void parseFile(){
@@ -69,6 +72,7 @@ public class LiarLiar {
 	private void readInAccuser(){
 		StringTokenizer st = new StringTokenizer(input.nextLine().trim(), " ");
 		String accuser = st.nextToken();
+		accusers.add(accuser);
 		int numAccusees = Integer.parseInt(st.nextToken());
 		
 		String currentAccusee = "";
@@ -88,7 +92,20 @@ public class LiarLiar {
 		}
 	}
 	
-	private void printHashMap(){
+	private void getTruthers(){
+		for (int c=0; c<accusers.size(); c++){
+			if (!accuseesToAccusers.containsKey(accusers.get(c)))
+				truthers.add(accusers.get(c));
+		}
+	}
+	
+	private void printDetails(){
+		printHashMap();
+		System.out.println();
+		printTruthers();
+	}
+
+	private void printHashMap() {
 		AbstractSet<String> keySet = (AbstractSet<String>) accuseesToAccusers.keySet();
 		Iterator<String> keySetIterator = keySet.iterator();
 		String currentAccusee = "";
@@ -103,6 +120,13 @@ public class LiarLiar {
 					System.out.print(", ");
 			}
 			System.out.println(")");
+		}
+	}
+	
+	private void printTruthers(){
+		System.out.println("Truthers: ");
+		for (int i=0; i<truthers.size(); i++){
+			System.out.println(truthers.get(i));
 		}
 	}
 

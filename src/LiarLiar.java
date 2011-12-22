@@ -3,6 +3,7 @@ import java.io.FileNotFoundException;
 import java.util.AbstractSet;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Scanner;
 import java.util.StringTokenizer;
@@ -17,6 +18,7 @@ public class LiarLiar {
 	private HashMap<String, ArrayList<String>> accusersToAccusees;
 	private HashMap<String, ArrayList<String>> accuseesToAccusers;
 	private ArrayList<String> truthers;
+	private HashSet<String> liars;
 	private static final boolean DEBUG = true;
 	
 	public LiarLiar(String fileName) throws Exception{
@@ -27,6 +29,7 @@ public class LiarLiar {
 		this.numAccusers = 0;
 		accusers = new ArrayList<String>();
 		truthers = new ArrayList<String>();
+		liars = new HashSet<String>();
 		accusersToAccusees = new HashMap<String, ArrayList<String>>();
 		accuseesToAccusers = new HashMap<String, ArrayList<String>>();
 	}
@@ -113,9 +116,14 @@ public class LiarLiar {
 	 * Set as liars all people accused by truthers.
 	 */
 	private void getLiarsFromTruthers(){
+		ArrayList<String> temp = new ArrayList<String>();
 		for (int i=0; i<truthers.size(); i++){
-			//TODO
-			
+			//if contained with accusers to accusees, which of course it will
+			//grab that list, and set all of those guys as liars.
+			temp = accusersToAccusees.get(truthers.get(i));
+			for (String l: temp){
+				liars.add(l);
+			}
 		}
 	}
 	
@@ -129,6 +137,9 @@ public class LiarLiar {
 		
 		System.out.println();
 		printTruthers();
+		
+		System.out.println();
+		printLiars();
 	}
 
 	private void printHashMap(HashMap<String, ArrayList<String>> hm) {
@@ -156,4 +167,11 @@ public class LiarLiar {
 		}
 	}
 
+	private void printLiars(){
+		System.out.println("Liars: ");
+		Iterator<String> liarIterator = liars.iterator();
+		while (liarIterator.hasNext()){
+			System.out.println(liarIterator.next());
+		}
+	}
 }

@@ -20,7 +20,7 @@ public class LiarLiar {
 	//private ArrayList<String> truthers;
 	private HashSet<String> truthers;
 	private HashSet<String> liars;
-	private static final boolean DEBUG = true;
+	private static final boolean DEBUG = false;
 	
 	public LiarLiar(String fileName) throws Exception{
 		this.fileName = fileName;
@@ -60,6 +60,8 @@ public class LiarLiar {
 			getMoreLiars();
 			//I need to repeat this cycle until everyone is either a truther or liar
 		}
+		
+		printOutputSizes();
 		
 		if (DEBUG)
 			printDetails();
@@ -215,6 +217,17 @@ public class LiarLiar {
 		Iterator<String> liarIterator = liars.iterator();
 		while (liarIterator.hasNext()){
 			System.out.println(liarIterator.next());
+		}
+	}
+	
+	private void printOutputSizes(){
+		if (truthers.size()>liars.size()){
+			System.out.print(truthers.size() + " ");
+			System.out.println(liars.size());
+		}
+		else{ //liars.size()>truthers.size() or ==
+			System.out.print(liars.size() + " ");
+			System.out.println(truthers.size());
 		}
 	}
 }

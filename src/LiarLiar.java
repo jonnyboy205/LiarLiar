@@ -13,6 +13,7 @@ public class LiarLiar {
 	private String fileName;
 	private Scanner input;
 	private int numAccusers;
+	private ArrayList<String> accusers;
 	private HashMap<String, ArrayList<String>> accuseesToAccusers;
 	private boolean debug;
 	
@@ -22,6 +23,7 @@ public class LiarLiar {
 		createScanner();
 		
 		this.numAccusers = 0;
+		accusers = new ArrayList<String>();
 		accuseesToAccusers = new HashMap<String, ArrayList<String>>();
 		
 		debug = true;
@@ -90,14 +92,14 @@ public class LiarLiar {
 		AbstractSet<String> keySet = (AbstractSet<String>) accuseesToAccusers.keySet();
 		Iterator<String> keySetIterator = keySet.iterator();
 		String currentAccusee = "";
-		ArrayList<String> accusers = new ArrayList<String>();
+		ArrayList<String> accusersPer = new ArrayList<String>();
 		while (keySetIterator.hasNext()){
 			currentAccusee = keySetIterator.next();
 			System.out.print(currentAccusee + "--> (");
-			accusers = accuseesToAccusers.get(currentAccusee);
-			for (int b=0; b<accusers.size(); b++){
-				System.out.print(accusers.get(b));
-				if (b<(accusers.size()-1))
+			accusersPer = accuseesToAccusers.get(currentAccusee);
+			for (int b=0; b<accusersPer.size(); b++){
+				System.out.print(accusersPer.get(b));
+				if (b<(accusersPer.size()-1))
 					System.out.print(", ");
 			}
 			System.out.println(")");

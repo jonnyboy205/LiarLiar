@@ -17,7 +17,6 @@ public class LiarLiar {
 	private ArrayList<String> accusers;
 	private HashMap<String, ArrayList<String>> accusersToAccusees;
 	private HashMap<String, ArrayList<String>> accuseesToAccusers;
-	//private ArrayList<String> truthers;
 	private HashSet<String> truthers;
 	private HashSet<String> liars;
 	private static final boolean DEBUG = false;
@@ -29,7 +28,6 @@ public class LiarLiar {
 		
 		this.numAccusers = 0;
 		accusers = new ArrayList<String>();
-		//truthers = new ArrayList<String>();
 		truthers = new HashSet<String>();
 		liars = new HashSet<String>();
 		accusersToAccusees = new HashMap<String, ArrayList<String>>();
@@ -137,12 +135,10 @@ public class LiarLiar {
 	 */
 	private void getLiarsFromTruthers(){
 		ArrayList<String> temp = new ArrayList<String>();
-//		for (int i=0; i<truthers.size(); i++){
 		Iterator<String> trutherIterator = truthers.iterator();
 		while (trutherIterator.hasNext()){
 			//if contained with accusers to accusees, which of course it will
 			//grab that list, and set all of those guys as liars.
-//			temp = accusersToAccusees.get(truthers.get(i));
 			temp = accusersToAccusees.get(trutherIterator.next());
 			for (String l: temp){
 				liars.add(l);
@@ -202,10 +198,6 @@ public class LiarLiar {
 	
 	private void printTruthers(){
 		System.out.println("Truthers: ");
-//		for (int i=0; i<truthers.size(); i++){
-//			System.out.println(truthers.get(i));
-//		}
-		
 		Iterator<String> trutherIterator = truthers.iterator();
 		while (trutherIterator.hasNext()){
 			System.out.println(trutherIterator.next());

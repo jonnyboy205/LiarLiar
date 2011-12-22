@@ -17,7 +17,8 @@ public class LiarLiar {
 	private ArrayList<String> accusers;
 	private HashMap<String, ArrayList<String>> accusersToAccusees;
 	private HashMap<String, ArrayList<String>> accuseesToAccusers;
-	private ArrayList<String> truthers;
+	//private ArrayList<String> truthers;
+	private HashSet<String> truthers;
 	private HashSet<String> liars;
 	private static final boolean DEBUG = true;
 	
@@ -28,7 +29,8 @@ public class LiarLiar {
 		
 		this.numAccusers = 0;
 		accusers = new ArrayList<String>();
-		truthers = new ArrayList<String>();
+		//truthers = new ArrayList<String>();
+		truthers = new HashSet<String>();
 		liars = new HashSet<String>();
 		accusersToAccusees = new HashMap<String, ArrayList<String>>();
 		accuseesToAccusers = new HashMap<String, ArrayList<String>>();
@@ -52,10 +54,13 @@ public class LiarLiar {
 		parseFile();
 		getTruthers();
 		
-		//start looking at truthers, see who they accuse, assume they are liars
-		getLiarsFromTruthers();
+		while (!isEveryoneDefined()){
+			//start looking at truthers, see who they accuse, assume they are liars
+			getLiarsFromTruthers();
+			getMoreLiars();
+			//I need to repeat this cycle until everyone is either a truther or liar
+		}
 		
-		//TODO inference
 		if (DEBUG)
 			printDetails();
 	}
@@ -110,6 +115,19 @@ public class LiarLiar {
 			if (!accuseesToAccusers.containsKey(accusers.get(c)))
 				truthers.add(accusers.get(c));
 		}
+	} 
+	
+	/**
+	 * 
+	 * @return
+	 */
+	private boolean isEveryoneDefined(){
+		boolean everyoneDefined = false;
+		
+		if (truthers.size() + liars.size() == numAccusers)
+			everyoneDefined = true;
+		
+		return everyoneDefined;
 	}
 	
 	/**
@@ -117,12 +135,32 @@ public class LiarLiar {
 	 */
 	private void getLiarsFromTruthers(){
 		ArrayList<String> temp = new ArrayList<String>();
-		for (int i=0; i<truthers.size(); i++){
+//		for (int i=0; i<truthers.size(); i++){
+		Iterator<String> trutherIterator = truthers.iterator();
+		while (trutherIterator.hasNext()){
 			//if contained with accusers to accusees, which of course it will
 			//grab that list, and set all of those guys as liars.
-			temp = accusersToAccusees.get(truthers.get(i));
+//			temp = accusersToAccusees.get(truthers.get(i));
+			temp = accusersToAccusees.get(trutherIterator.next());
 			for (String l: temp){
 				liars.add(l);
+			}
+		}
+	}
+	
+	/**
+	 * Look at liars, and define their accusees as truthers
+	 */
+	private void getMoreLiars(){
+		Iterator<String> liarIterator = liars.iterator();
+		String currentLiar = "";
+		ArrayList<String> temp = new ArrayList<String>();
+		while (liarIterator.hasNext()){
+			currentLiar = liarIterator.next();
+			//look at who they accuse of being liars
+			temp = accusersToAccusees.get(currentLiar);
+			for (String currentAccusee: temp){
+				truthers.add(currentAccusee);
 			}
 		}
 	}
@@ -162,8 +200,13 @@ public class LiarLiar {
 	
 	private void printTruthers(){
 		System.out.println("Truthers: ");
-		for (int i=0; i<truthers.size(); i++){
-			System.out.println(truthers.get(i));
+//		for (int i=0; i<truthers.size(); i++){
+//			System.out.println(truthers.get(i));
+//		}
+		
+		Iterator<String> trutherIterator = truthers.iterator();
+		while (trutherIterator.hasNext()){
+			System.out.println(trutherIterator.next());
 		}
 	}
 

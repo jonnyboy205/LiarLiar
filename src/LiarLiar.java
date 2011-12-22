@@ -16,7 +16,7 @@ public class LiarLiar {
 	private ArrayList<String> accusers;
 	private ArrayList<String> truthers;
 	private HashMap<String, ArrayList<String>> accuseesToAccusers;
-	private boolean debug;
+	private static final boolean DEBUG = true;
 	
 	public LiarLiar(String fileName) throws Exception{
 		this.fileName = fileName;
@@ -27,8 +27,6 @@ public class LiarLiar {
 		accusers = new ArrayList<String>();
 		truthers = new ArrayList<String>();
 		accuseesToAccusers = new HashMap<String, ArrayList<String>>();
-		
-		debug = true;
 	}
 	
 	private void createScanner() throws Exception{
@@ -48,7 +46,7 @@ public class LiarLiar {
 	public void run(){
 		parseFile();
 		getTruthers();
-		if (debug)
+		if (DEBUG)
 			printDetails();
 	}
 	

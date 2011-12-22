@@ -36,9 +36,9 @@ public class LiarLiar {
 		getNumAccusersFromFirstLine();
 		
 		//keep reading the next lines, accuser by accuser		
-		for (int i=0; i<numAccusers; i++){
-			readInAccuser();
-		}
+//		for (int i=0; i<numAccusers; i++){
+//			readInAccuser();
+//		}
 			
 	}
 
@@ -50,7 +50,7 @@ public class LiarLiar {
 	}
 	
 	private void readInAccuser(){
-		
+		//TODO 
 	}
 
 }

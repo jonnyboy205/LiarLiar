@@ -8,7 +8,7 @@ public class LiarLiarTester {
 		
 		try {
 			LiarLiar myLiarLiar = new LiarLiar(args[0]);
-			myLiarLiar.run();
+			myLiarLiar.parseFile();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

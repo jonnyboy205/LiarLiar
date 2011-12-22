@@ -7,10 +7,14 @@ public class LiarLiar {
 
 	String fileName;
 	Scanner input;
+	int numAccusers;
 	
 	public LiarLiar(String fileName) throws Exception{
 		this.fileName = fileName;
+		
 		createScanner();
+		
+		this.numAccusers = 0;
 	}
 	
 	private void createScanner() throws Exception{
@@ -27,7 +31,25 @@ public class LiarLiar {
 		
 	}
 	
-	public void run(){
+	public void parseFile(){
+		//first read the first line for the number of people you are dealing with
+		getNumAccusersFromFirstLine();
+		
+		//keep reading the next lines, accuser by accuser		
+		for (int i=0; i<numAccusers; i++){
+			readInAccuser();
+		}
+			
+	}
+
+	private void getNumAccusersFromFirstLine() {
+		String firstLine = "";
+		if (input.hasNextLine())
+			firstLine = input.nextLine();
+		numAccusers = Integer.parseInt(firstLine.trim());
+	}
+	
+	private void readInAccuser(){
 		
 	}
 
